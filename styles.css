@@ -1,0 +1,237 @@
+/* Estilos Gerais */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+
+/* Abas */
+.abas {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.aba {
+  padding: 10px 20px;
+  cursor: pointer;
+  background: #ddd;
+  border-radius: 4px 4px 0 0;
+  border: none;
+}
+
+.aba.ativa {
+  background: white;
+}
+
+.conteudo-aba {
+  display: none;
+}
+
+.conteudo-aba.ativa {
+  display: block;
+}
+
+/* Vendas */
+.container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.search-box {
+  margin-bottom: 20px;
+}
+
+.produtos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.produto {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.produto:hover {
+  transform: translateY(-2px);
+}
+
+/* Carrinho */
+.carrinho {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.item-carrinho {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  padding: 10px;
+  background: #f8f8f8;
+  border-radius: 4px;
+}
+
+.total {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 2px solid #eee;
+}
+
+/* Pagamento */
+.payment-section {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f8f8f8;
+  border-radius: 8px;
+}
+
+.payment-methods {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.payment-method {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.payment-method.selected {
+  background: #4caf50;
+  color: white;
+  border-color: #45a049;
+}
+
+.change-section {
+  margin-top: 10px;
+}
+
+/* Estoque */
+.form-cadastro {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.form-cadastro input {
+  margin: 5px;
+  padding: 8px;
+  width: 200px;
+}
+
+.estoque-list {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.estoque-actions {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.ajuste-estoque {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.ajuste-estoque select,
+.ajuste-estoque input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.estoque-baixo {
+  color: #d32f2f;
+  font-weight: bold;
+}
+
+.alerta-estoque {
+  display: inline-block;
+  margin-left: 10px;
+  color: #d32f2f;
+  font-weight: bold;
+}
+
+/* Controle */
+#relatorio {
+  margin-top: 20px;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filtros-relatorio {
+  margin-bottom: 20px;
+}
+
+.filtros-relatorio input,
+.filtros-relatorio select {
+  margin: 5px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* Vendedores */
+.vendedores-list {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.vendedor-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+  padding: 10px;
+  background: #f8f8f8;
+  border-radius: 4px;
+}
+
+.vendedor-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* Gráficos */
+#grafico-vendas {
+  margin-top: 20px;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDV Completo</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="abas">
+      <button class="aba ativa" onclick="mudarAba('vendas')">Vendas</button>
+      <button class="aba" onclick="mudarAba('estoque')">Estoque</button>
+      <button class="aba" onclick="mudarAba('controle')">Controle</button>
+      <button class="aba" onclick="acessarAbaVendedores()">Vendedores</button>
+    </div>
+
+    <!-- Aba de Vendas -->
+    <div id="vendas" class="conteudo-aba ativa">
+      <div class="search-box">
+        <input
+          type="text"
+          id="search-product"
+          placeholder="Pesquisar produto..."
+          onkeyup="filterProducts()"
+        />
+      </div>
+      <div class="container">
+        <div class="produtos" id="produtos"></div>
+
+        <div class="carrinho">
+          <h2>Carrinho</h2>
+          <div id="itens-carrinho"></div>
+          <div class="total">Total: R$ <span id="total">0.00</span></div>
+
+          <div class="discount-section">
+            <input
+              type="number"
+              id="desconto-geral"
+              placeholder="Desconto %"
+              min="0"
+              max="100"
+              step="1"
+            />
+            <button onclick="aplicarDescontoGeral()">Aplicar Desconto</button>
+            <button onclick="removerDescontoGeral()">Remover Desconto</button>
+          </div>
+
+          <div class="payment-section">
+            <h3>Forma de Pagamento</h3>
+            <div class="payment-methods">
+              <div
+                class="payment-method"
+                onclick="selectPaymentMethod('dinheiro')"
+              >
+                Dinheiro
+              </div>
+              <div class="payment-method" onclick="selectPaymentMethod('pix')">
+                PIX
+              </div>
+              <div
+                class="payment-method"
+                onclick="selectPaymentMethod('credito')"
+              >
+                Cartão Crédito
+              </div>
+              <div
+                class="payment-method"
+                onclick="selectPaymentMethod('debito')"
+              >
+                Cartão Débito
+              </div>
+            </div>
+
+            <div id="mixed-payment" style="display: none">
+              <h4>Pagamento Misto</h4>
+              <div id="payment-split"></div>
+            </div>
+
+            <div
+              class="change-section"
+              id="troco-section"
+              style="display: none"
+            >
+              <input
+                type="number"
+                id="valor-recebido"
+                placeholder="Valor Recebido"
+                step="0.01"
+              />
+              <div>Troco: R$ <span id="troco">0.00</span></div>
+            </div>
+          </div>
+
+          <button onclick="finalizarVenda()">Finalizar Venda</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Aba de Estoque -->
+    <div id="estoque" class="conteudo-aba">
+      <div class="form-cadastro">
+        <h3>Cadastrar Novo Produto</h3>
+        <input type="text" id="nome-produto" placeholder="Nome do Produto" />
+        <input
+          type="number"
+          id="preco-produto"
+          step="0.01"
+          placeholder="Preço"
+        />
+        <input
+          type="number"
+          id="estoque-inicial"
+          placeholder="Estoque Inicial"
+        />
+        <input
+          type="number"
+          id="max-desconto"
+          placeholder="Desconto Máximo (%)"
+        />
+        <button onclick="cadastrarProduto()">Cadastrar</button>
+      </div>
+
+      <div class="estoque-actions">
+        <h3>Ajustes de Estoque</h3>
+        <div class="ajuste-estoque">
+          <select id="produto-ajuste">
+            <option value="">Selecione um produto</option>
+          </select>
+          <input
+            type="number"
+            id="quantidade-ajuste"
+            placeholder="Quantidade"
+          />
+          <button onclick="ajustarEstoque()">Aplicar Ajuste</button>
+        </div>
+      </div>
+
+      <div class="estoque-list">
+        <h3>Estoque Atual</h3>
+        <div id="lista-estoque"></div>
+      </div>
+    </div>
+
+    <!-- Aba de Controle -->
+    <div id="controle" class="conteudo-aba">
+      <h3>Relatórios</h3>
+      <div class="filtros-relatorio">
+        <input type="date" id="filtro-data" />
+        <input type="text" id="filtro-vendedor" placeholder="Vendedor" />
+        <input type="text" id="filtro-produto" placeholder="Produto" />
+        <select id="filtro-pagamento">
+          <option value="">Todas as formas</option>
+          <option value="dinheiro">Dinheiro</option>
+          <option value="pix">PIX</option>
+          <option value="credito">Cartão Crédito</option>
+          <option value="debito">Cartão Débito</option>
+        </select>
+        <button onclick="gerarRelatorioVendas()">Filtrar</button>
+        <button onclick="exportarRelatorioCSV()">Exportar CSV</button>
+      </div>
+      <div id="relatorio"></div>
+      <div id="grafico-vendas">
+        <canvas id="graficoDesempenho"></canvas>
+      </div>
+    </div>
+
+    <!-- Aba de Vendedores -->
+    <div id="vendedores" class="conteudo-aba">
+      <div class="form-cadastro">
+        <h3>Cadastrar Novo Vendedor</h3>
+        <input type="text" id="nome-vendedor" placeholder="Nome do Vendedor" />
+        <input type="password" id="senha-vendedor" placeholder="Senha" />
+        <button onclick="cadastrarVendedor()">Cadastrar</button>
+      </div>
+
+      <div class="vendedores-list">
+        <h3>Vendedores Cadastrados</h3>
+        <div id="lista-vendedores"></div>
+      </div>
+    </div>
+  </body>
+</html>
