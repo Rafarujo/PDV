@@ -1,57 +1,9 @@
-let produtos = [];
+let produtos = JSON.parse(localStorage.getItem('produtos')) || [];
 let carrinho = [];
-let vendas = [];
-let vendedores = [];
+let vendas = JSON.parse(localStorage.getItem('vendas')) || [];
+let vendedores = JSON.parse(localStorage.getItem('vendedores')) || [];
 let selectedPaymentMethods = [];
 let currentUser = null;
-let fileHandle = null;
-
-// Carregar os dados automaticamente ao iniciar
-async function carregarDados() {
-    try {
-        // Abrir o arquivo de dados.json automaticamente
-        [fileHandle] = await window.showOpenFilePicker({
-            types: [{ description: "Arquivo JSON", accept: { "application/json": [".json"] } }],
-            multiple: false
-        });
-
-        const file = await fileHandle.getFile();
-        const text = await file.text();
-        const dados = JSON.parse(text);
-
-        produtos = dados.produtos || [];
-        vendas = dados.vendas || [];
-        vendedores = dados.vendedores || [];
-
-        console.log("Dados carregados:", dados);
-        init();
-    } catch (error) {
-        console.error("Erro ao carregar arquivo:", error);
-    }
-}
-
-// Salvar dados automaticamente
-async function salvarDados() {
-    if (!fileHandle) {
-        console.error("Arquivo não selecionado.");
-        return;
-    }
-
-    try {
-        const dados = {
-            produtos,
-            vendas,
-            vendedores
-        };
-
-        const writable = await fileHandle.createWritable();
-        await writable.write(JSON.stringify(dados, null, 2));
-        await writable.close();
-        console.log("Dados salvos automaticamente!");
-    } catch (error) {
-        console.error("Erro ao salvar dados:", error);
-    }
-}
 
 // Usuário ADM padrão
 if (!vendedores.some(v => v.nome === 'admin')) {
@@ -61,7 +13,7 @@ if (!vendedores.some(v => v.nome === 'admin')) {
         isAdmin: true,
         ativo: true
     });
-    salvarDados();
+    localStorage.setItem('vendedores', JSON.stringify(vendedores));
 }
 
 // Função de Login
@@ -74,7 +26,7 @@ function fazerLogin() {
         currentUser = vendedor;
         document.getElementById('login').style.display = 'none';
         document.getElementById('pdv').style.display = 'block';
-        carregarDados();
+        init();
     } else {
         alert('Usuário não encontrado ou senha incorreta!');
     }
@@ -670,6 +622,13 @@ function gerarGraficoDesempenho() {
             }
         }
     });
+}
+
+// Função para salvar dados no localStorage
+function salvarDados() {
+    localStorage.setItem('produtos', JSON.stringify(produtos));
+    localStorage.setItem('vendas', JSON.stringify(vendas));
+    localStorage.setItem('vendedores', JSON.stringify(vendedores));
 }
 
 // Inicialização
