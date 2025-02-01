@@ -17,30 +17,41 @@ body {
     margin: 100px auto;
     padding: 20px;
     background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .login-container h2 {
     margin-bottom: 20px;
+    font-size: 1.5em;
+    color: #333;
 }
 
 .login-container input {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     margin: 10px 0;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 6px;
+    font-size: 1em;
+    transition: border-color 0.3s ease;
+}
+
+.login-container input:focus {
+    border-color: #4CAF50;
+    outline: none;
 }
 
 .login-container button {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     background: #4CAF50;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
+    font-size: 1em;
+    transition: background 0.3s ease;
 }
 
 .login-container button:hover {
@@ -55,15 +66,18 @@ body {
 }
 
 .aba {
-    padding: 10px 20px;
+    padding: 12px 24px;
     cursor: pointer;
     background: #ddd;
-    border-radius: 4px 4px 0 0;
+    border-radius: 6px 6px 0 0;
     border: none;
+    font-size: 1em;
+    transition: background 0.3s ease;
 }
 
 .aba.ativa {
     background: white;
+    font-weight: bold;
 }
 
 .conteudo-aba {
@@ -87,6 +101,20 @@ body {
     margin-bottom: 20px;
 }
 
+.search-box input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1em;
+    transition: border-color 0.3s ease;
+}
+
+.search-box input:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
 .produtos {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -95,63 +123,69 @@ body {
 
 .produto {
     background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .produto:hover {
-    transform: translateY(-2px);
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
 /* Carrinho */
 .carrinho {
     background: white;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .item-carrinho {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin: 10px 0;
-    padding: 10px;
+    padding: 15px;
     background: #f8f8f8;
-    border-radius: 4px;
+    border-radius: 8px;
+    font-size: 1.1em;
 }
 
 .total {
-    font-size: 1.2em;
+    font-size: 1.5em;
     font-weight: bold;
     margin-top: 20px;
-    padding-top: 10px;
+    padding-top: 15px;
     border-top: 2px solid #eee;
+    color: #333;
 }
 
 /* Pagamento */
 .payment-section {
     margin-top: 20px;
-    padding: 15px;
+    padding: 20px;
     background: #f8f8f8;
-    border-radius: 8px;
+    border-radius: 12px;
 }
 
 .payment-methods {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin: 10px 0;
+    gap: 15px;
+    margin: 15px 0;
 }
 
 .payment-method {
-    padding: 10px;
+    padding: 15px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
     text-align: center;
+    font-size: 1.1em;
+    transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .payment-method.selected {
@@ -161,36 +195,59 @@ body {
 }
 
 .change-section {
-    margin-top: 10px;
+    margin-top: 15px;
+}
+
+.change-section input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1.1em;
+    transition: border-color 0.3s ease;
+}
+
+.change-section input:focus {
+    border-color: #4CAF50;
+    outline: none;
 }
 
 /* Estoque */
 .form-cadastro {
     background: white;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     margin-bottom: 20px;
 }
 
 .form-cadastro input {
     margin: 5px;
-    padding: 8px;
+    padding: 10px;
     width: 200px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1em;
+    transition: border-color 0.3s ease;
+}
+
+.form-cadastro input:focus {
+    border-color: #4CAF50;
+    outline: none;
 }
 
 .estoque-list {
     background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .estoque-actions {
     background: white;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     margin-bottom: 20px;
 }
 
@@ -202,9 +259,17 @@ body {
 
 .ajuste-estoque select,
 .ajuste-estoque input {
-    padding: 8px;
+    padding: 10px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 6px;
+    font-size: 1em;
+    transition: border-color 0.3s ease;
+}
+
+.ajuste-estoque select:focus,
+.ajuste-estoque input:focus {
+    border-color: #4CAF50;
+    outline: none;
 }
 
 .estoque-baixo {
@@ -223,9 +288,9 @@ body {
 #relatorio {
     margin-top: 20px;
     background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .filtros-relatorio {
@@ -235,17 +300,25 @@ body {
 .filtros-relatorio input,
 .filtros-relatorio select {
     margin: 5px;
-    padding: 8px;
+    padding: 10px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 6px;
+    font-size: 1em;
+    transition: border-color 0.3s ease;
+}
+
+.filtros-relatorio input:focus,
+.filtros-relatorio select:focus {
+    border-color: #4CAF50;
+    outline: none;
 }
 
 /* Vendedores */
 .vendedores-list {
     background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .vendedor-item {
@@ -253,9 +326,10 @@ body {
     justify-content: space-between;
     align-items: center;
     margin: 10px 0;
-    padding: 10px;
+    padding: 15px;
     background: #f8f8f8;
-    border-radius: 4px;
+    border-radius: 8px;
+    font-size: 1.1em;
 }
 
 .vendedor-actions {
@@ -267,7 +341,7 @@ body {
 #grafico-vendas {
     margin-top: 20px;
     background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
