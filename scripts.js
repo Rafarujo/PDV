@@ -1,10 +1,57 @@
-let produtos = JSON.parse(localStorage.getItem('produtos')) || [];
+let produtos = [];
 let carrinho = [];
-let vendas = JSON.parse(localStorage.getItem('vendas')) || [];
-let vendedores = JSON.parse(localStorage.getItem('vendedores')) || [];
+let vendas = [];
+let vendedores = [];
 let selectedPaymentMethods = [];
 let currentUser = null;
-let inactivityTimer;
+let fileHandle = null;
+
+// Carregar os dados automaticamente ao iniciar
+async function carregarDados() {
+    try {
+        // Abrir o arquivo de dados.json automaticamente
+        [fileHandle] = await window.showOpenFilePicker({
+            types: [{ description: "Arquivo JSON", accept: { "application/json": [".json"] } }],
+            multiple: false
+        });
+
+        const file = await fileHandle.getFile();
+        const text = await file.text();
+        const dados = JSON.parse(text);
+
+        produtos = dados.produtos || [];
+        vendas = dados.vendas || [];
+        vendedores = dados.vendedores || [];
+
+        console.log("Dados carregados:", dados);
+        init();
+    } catch (error) {
+        console.error("Erro ao carregar arquivo:", error);
+    }
+}
+
+// Salvar dados automaticamente
+async function salvarDados() {
+    if (!fileHandle) {
+        console.error("Arquivo não selecionado.");
+        return;
+    }
+
+    try {
+        const dados = {
+            produtos,
+            vendas,
+            vendedores
+        };
+
+        const writable = await fileHandle.createWritable();
+        await writable.write(JSON.stringify(dados, null, 2));
+        await writable.close();
+        console.log("Dados salvos automaticamente!");
+    } catch (error) {
+        console.error("Erro ao salvar dados:", error);
+    }
+}
 
 // Usuário ADM padrão
 if (!vendedores.some(v => v.nome === 'admin')) {
@@ -12,10 +59,9 @@ if (!vendedores.some(v => v.nome === 'admin')) {
         nome: 'admin',
         senha: '123456',
         isAdmin: true,
-        ativo: true,
-        tempoInatividade: 30
+        ativo: true
     });
-    localStorage.setItem('vendedores', JSON.stringify(vendedores));
+    salvarDados();
 }
 
 // Função de Login
@@ -28,34 +74,10 @@ function fazerLogin() {
         currentUser = vendedor;
         document.getElementById('login').style.display = 'none';
         document.getElementById('pdv').style.display = 'block';
-        iniciarTemporizadorInatividade();
-        init();
+        carregarDados();
     } else {
         alert('Usuário não encontrado ou senha incorreta!');
     }
-}
-
-// Temporizador de Inatividade
-function iniciarTemporizadorInatividade() {
-    const tempoInatividade = currentUser.tempoInatividade * 60 * 1000;
-    clearTimeout(inactivityTimer);
-    inactivityTimer = setTimeout(logout, tempoInatividade);
-    document.addEventListener('mousemove', resetInactivityTimer);
-    document.addEventListener('keypress', resetInactivityTimer);
-}
-
-function resetInactivityTimer() {
-    clearTimeout(inactivityTimer);
-    iniciarTemporizadorInatividade();
-}
-
-function logout() {
-    currentUser = null;
-    document.getElementById('login').style.display = 'block';
-    document.getElementById('pdv').style.display = 'none';
-    document.removeEventListener('mousemove', resetInactivityTimer);
-    document.removeEventListener('keypress', resetInactivityTimer);
-    alert('Sessão expirada por inatividade!');
 }
 
 // Controle de Abas
@@ -461,13 +483,13 @@ function atualizarListaEstoque() {
         lista.appendChild(div);
     });
 }
+
 // Funções de Vendedores
 function cadastrarVendedor() {
     const nome = document.getElementById('nome-vendedor').value;
     const senha = document.getElementById('senha-vendedor').value;
-    const tempoInatividade = parseInt(document.getElementById('tempo-inatividade').value);
 
-    if (!nome || !senha || !tempoInatividade) {
+    if (!nome || !senha) {
         alert('Preencha todos os campos!');
         return;
     }
@@ -481,15 +503,13 @@ function cadastrarVendedor() {
         nome,
         senha,
         isAdmin: false,
-        ativo: true,
-        tempoInatividade
+        ativo: true
     });
 
     salvarDados();
     atualizarListaVendedores();
     document.getElementById('nome-vendedor').value = '';
     document.getElementById('senha-vendedor').value = '';
-    document.getElementById('tempo-inatividade').value = '';
     alert('Vendedor cadastrado com sucesso!');
 }
 
@@ -521,12 +541,8 @@ function atualizarListaVendedores() {
 function editarVendedor(nome) {
     const vendedor = vendedores.find(v => v.nome === nome);
     const novaSenha = prompt('Digite a nova senha:');
-    const novoTempoInatividade = prompt('Digite o novo tempo de inatividade (minutos):');
     if (novaSenha) {
         vendedor.senha = novaSenha;
-    }
-    if (novoTempoInatividade) {
-        vendedor.tempoInatividade = parseInt(novoTempoInatividade);
     }
     salvarDados();
     atualizarListaVendedores();
@@ -654,13 +670,6 @@ function gerarGraficoDesempenho() {
             }
         }
     });
-}
-
-// Função para salvar dados no localStorage
-function salvarDados() {
-    localStorage.setItem('produtos', JSON.stringify(produtos));
-    localStorage.setItem('vendas', JSON.stringify(vendas));
-    localStorage.setItem('vendedores', JSON.stringify(vendedores));
 }
 
 // Inicialização
