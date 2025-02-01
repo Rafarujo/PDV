@@ -13,18 +13,14 @@
         <input type="password" id="login-senha" placeholder="Senha">
         <button onclick="fazerLogin()">Entrar</button>
     </div>
-    
- <div id="pdv" style="display: none;">
-    <div id="top-bar">
-        <button id="logout-btn" onclick="logout()">Logout</button>
-    </div>
-    <div class="abas">
-        <button class="aba ativa" onclick="mudarAba('vendas')">Vendas</button>
-        <button class="aba" onclick="mudarAba('estoque')">Estoque</button>
-        <button class="aba" onclick="mudarAba('controle')">Controle</button>
-        <button class="aba" onclick="acessarAbaVendedores()">Vendedores</button>
-    </div>
-</div>
+
+    <div id="pdv" style="display: none;">
+        <div class="abas">
+            <button class="aba ativa" onclick="mudarAba('vendas')">Vendas</button>
+            <button class="aba" onclick="mudarAba('estoque')">Estoque</button>
+            <button class="aba" onclick="mudarAba('controle')">Controle</button>
+            <button class="aba" onclick="acessarAbaVendedores()">Vendedores</button>
+        </div>
 
         <!-- Aba de Vendas -->
         <div id="vendas" class="conteudo-aba ativa">
