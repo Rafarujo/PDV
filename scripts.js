@@ -31,7 +31,12 @@ function fazerLogin() {
         alert('Usuário não encontrado ou senha incorreta!');
     }
 }
-
+function logout() {
+    currentUser = null;
+    document.getElementById('login').style.display = 'block';
+    document.getElementById('pdv').style.display = 'none';
+    alert('Sessão encerrada!');
+}
 // Controle de Abas
 function mudarAba(abaId) {
     if (abaId === 'vendedores' && (!currentUser || !currentUser.isAdmin)) {
