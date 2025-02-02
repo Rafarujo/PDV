@@ -5,21 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDV Completo</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <div id="login" class="login-container">
-        <h2>Login</h2>
-        <input type="text" id="login-nome" placeholder="Nome">
-        <input type="password" id="login-senha" placeholder="Senha">
-        <button onclick="fazerLogin()">Entrar</button>
+        <div class="login-box">
+            <form id="login-form" onsubmit="return false;">
+                <h2>Login do Sistema</h2>
+                <div class="input-group">
+                    <label for="login-nome">Usuário</label>
+                    <input type="text" id="login-nome" placeholder="Digite seu usuário">
+                </div>
+                <div class="input-group">
+                    <label for="login-senha">Senha</label>
+                    <input type="password" id="login-senha" placeholder="Digite sua senha">
+                </div>
+                <div class="error-message" id="login-error"></div>
+                <button type="submit" class="login-btn" id="login-btn">Entrar</button>
+            </form>
+        </div>
     </div>
 
     <div id="pdv" style="display: none;">
+<div id="top-bar">
+    <div class="top-bar-actions">
+        <div class="caixa-actions">
+            <button class="btn-action" onclick="visualizarHistoricoFechamentos()">
+                <i class="fas fa-history"></i>
+                Histórico
+            </button>
+            <button class="btn-action btn-fechar-caixa" onclick="fecharCaixa()">
+                <i class="fas fa-cash-register"></i>
+                Fechar Caixa
+            </button>
+        </div>
+        <button id="logout-btn" onclick="fazerLogout()">
+            <i class="fas fa-sign-out-alt"></i>
+            Sair
+        </button>
+    </div>
+</div>
+
         <div class="abas">
             <button class="aba ativa" onclick="mudarAba('vendas')">Vendas</button>
-            <button class="aba" onclick="mudarAba('estoque')">Estoque</button>
             <button class="aba" onclick="mudarAba('controle')">Controle</button>
-            <button class="aba" onclick="acessarAbaVendedores()">Vendedores</button>
+            <button class="aba" onclick="mudarAba('gestao')">Gestão</button>
         </div>
 
         <!-- Aba de Vendas -->
@@ -36,9 +66,7 @@
                     <div class="total">Total: R$ <span id="total">0.00</span></div>
 
                     <div class="discount-section">
-                        <input type="number" id="desconto-geral" placeholder="Desconto %" min="0" max="100" step="1">
                         <button onclick="aplicarDescontoGeral()">Aplicar Desconto</button>
-                        <button onclick="removerDescontoGeral()">Remover Desconto</button>
                     </div>
 
                     <div class="payment-section">
@@ -50,14 +78,18 @@
                             <div class="payment-method" onclick="selectPaymentMethod('debito')">Cartão Débito</div>
                         </div>
                         
-                        <div id="mixed-payment" style="display: none;">
-                            <h4>Pagamento Misto</h4>
-                            <div id="payment-split"></div>
-                        </div>
+                        <div id="mixed-payment" style="display: none;"></div>
 
                         <div class="change-section" id="troco-section" style="display: none;">
-                            <input type="number" id="valor-recebido" placeholder="Valor Recebido" step="0.01">
-                            <div>Troco: R$ <span id="troco">0.00</span></div>
+                            <div class="input-group">
+                                <label for="valor-recebido">Dinheiro Recebido</label>
+                                <input type="number" id="valor-recebido" placeholder="Digite o valor recebido" 
+                                       step="0.01" oninput="calculateTroco()">
+                            </div>
+                            <div class="troco-display">
+                                <span>Troco:</span>
+                                <span class="troco-valor">R$ <span id="troco">0.00</span></span>
+                            </div>
                         </div>
                     </div>
 
@@ -66,76 +98,96 @@
             </div>
         </div>
 
-        <!-- Aba de Estoque -->
-        <div id="estoque" class="conteudo-aba">
-            <div class="form-cadastro">
-                <h3>Cadastrar Novo Produto</h3>
-                <input type="text" id="nome-produto" placeholder="Nome do Produto">
-                <input type="number" id="preco-produto" step="0.01" placeholder="Preço">
-                <input type="number" id="estoque-inicial" placeholder="Estoque Inicial">
-                <input type="number" id="max-desconto" placeholder="Desconto Máximo (%)">
-                <button onclick="cadastrarProduto()">Cadastrar</button>
+        <!-- Aba de Controle -->
+        <div id="controle" class="conteudo-aba">
+            <div class="section-header">
+                <h3>Controle de Caixa</h3>
             </div>
-            
-            <div class="estoque-actions">
-                <h3>Ajustes de Estoque</h3>
-                <div class="ajuste-estoque">
-                    <select id="produto-ajuste">
-                        <option value="">Selecione um produto</option>
-                    </select>
-                    <input type="number" id="quantidade-ajuste" placeholder="Quantidade">
-                    <button onclick="ajustarEstoque()">Aplicar Ajuste</button>
-                    <button onclick="editarProduto()">Editar Produto</button>
-                    <button onclick="excluirProduto()">Excluir Produto</button>
+
+            <!-- Resumo Financeiro -->
+            <div class="relatorio-cards">
+                <div class="relatorio-card">
+                    <h4>Total de Vendas Hoje</h4>
+                    <div class="valor positivo">R$ <span id="total-vendas">0.00</span></div>
+                </div>
+                <div class="relatorio-card">
+                    <h4>Saldo em Caixa</h4>
+                    <div class="valor" id="saldo-caixa">R$ 0.00</div>
+                </div>
+                <div class="relatorio-card">
+                    <h4>Total de Descontos</h4>
+                    <div class="valor negativo">R$ <span id="total-descontos">0.00</span></div>
                 </div>
             </div>
 
-            <div class="estoque-list">
-                <h3>Estoque Atual</h3>
-                <div id="lista-estoque"></div>
+            <!-- Formas de Pagamento -->
+            <div class="relatorio-pagamentos">
+                <h4>Vendas por Forma de Pagamento</h4>
+                <div class="pagamentos-grid" id="pagamentos-grid"></div>
             </div>
-        </div>
 
-        <!-- Aba de Controle -->
-        <div id="controle" class="conteudo-aba">
-            <h3>Relatórios</h3>
-            <div class="filtros-relatorio">
-                <input type="date" id="filtro-data">
-                <input type="text" id="filtro-vendedor" placeholder="Vendedor">
-                <input type="text" id="filtro-produto" placeholder="Produto">
-                <select id="filtro-pagamento">
-                    <option value="">Todas as formas</option>
-                    <option value="dinheiro">Dinheiro</option>
-                    <option value="pix">PIX</option>
-                    <option value="credito">Cartão Crédito</option>
-                    <option value="debito">Cartão Débito</option>
-                </select>
-                <button onclick="gerarRelatorioVendas()">Filtrar</button>
-                <button onclick="exportarRelatorioCSV()">Exportar CSV</button>
+            <!-- Retiradas -->
+            <div class="retirada-section">
+                <div class="section-header">
+                    <h4>Retirada de Caixa</h4>
+                    <button onclick="mostrarHistoricoRetiradas()" class="btn-historico">Ver Histórico</button>
+                </div>
+                <div class="form-retirada">
+                    <input type="number" id="valor-retirada" placeholder="Valor da Retirada" step="0.01">
+                    <input type="text" id="motivo-retirada" placeholder="Motivo da Retirada">
+                    <button onclick="iniciarRetirada()">Realizar Retirada</button>
+                </div>
             </div>
-            <div id="relatorio"></div>
+
+            <!-- Gráfico de Desempenho -->
             <div id="grafico-vendas">
+                <h4>Desempenho de Vendedores</h4>
                 <canvas id="graficoDesempenho"></canvas>
             </div>
+
+           
         </div>
 
-        <!-- Aba de Vendedores -->
-        <div id="vendedores" class="conteudo-aba">
-            <div class="form-cadastro">
-                <h3>Cadastrar Novo Vendedor</h3>
-                <input type="text" id="nome-vendedor" placeholder="Nome do Vendedor">
-                <input type="password" id="senha-vendedor" placeholder="Senha">
-                <button onclick="cadastrarVendedor()">Cadastrar</button>
-            </div>
-            
-            <div class="vendedores-list">
-                <h3>Vendedores Cadastrados</h3>
-                <div id="lista-vendedores"></div>
+        <!-- Aba de Gestão -->
+        <div id="gestao" class="conteudo-aba">
+            <div class="gestao-container">
+                <!-- Seção de Produtos -->
+                <div class="gestao-section">
+                    <div class="gestao-header">
+                        <h3>Gestão de Produtos</h3>
+                        <div class="gestao-actions">
+                            <button onclick="mostrarModalCadastro()" class="btn-action">Cadastrar Produto</button>
+                            <button onclick="mostrarModalEstoque()" class="btn-action">Ajustar Estoque</button>
+                            <button onclick="mostrarModalListaEstoque()" class="btn-action">Ver Estoque</button>
+                        </div>
+                    </div>
+
+                    <div class="analise-lucro">
+                        <h4>Análise de Lucratividade</h4>
+                        <div class="cards-lucro" id="cards-lucro"></div>
+                        <div class="tabela-produtos" id="tabela-produtos"></div>
+                    </div>
+                </div>
+
+                <!-- Seção de Vendedores -->
+                <div class="gestao-section">
+                    <div class="section-header">
+                        <h3>Gestão de Vendedores</h3>
+                        <button class="btn-action" onclick="abrirGestaoVendedores()">
+                            <i class="fas fa-users-cog"></i>
+                            Gerenciar Vendedores
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
+    <div id="notification-container"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="scripts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 </body>
 </html>
